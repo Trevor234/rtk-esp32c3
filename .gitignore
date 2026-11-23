@@ -1,0 +1,36 @@
+# ESP-IDF
+build/
+firmware/build/
+sdkconfig
+sdkconfig.old
+firmware/sdkconfig
+firmware/sdkconfig.old
+
+# Host test builds
+tests/build/
+*.exe
+*.o
+*.a
+*.so
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Local dev/bench artifacts & logs
+_logs/
+_ssh/
+_ref/
+dist/*backup*
+*.bak
+
+# Map tools caches
+tools/tilecache/
+tools/map.bin
+
+# System & IDE
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

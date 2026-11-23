@@ -1,0 +1,45 @@
+# Defaults for the USV GPS/RTK simulator (ESP32-C3).
+#
+# Console is routed to the USB Serial/JTAG peripheral on purpose: that frees the
+# hardware UART0 controller so both UART0 and UART1 are available for the GPS
+# emulation (one towards the flight controller, one as an optional monitor port).
+
+CONFIG_IDF_TARGET="esp32c3"
+
+# --- console on USB-Serial-JTAG, so UART0 stays free for NMEA output ----------
+CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y
+CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG_ENABLED=y
+CONFIG_ESP_CONSOLE_UART_DEFAULT=n
+CONFIG_ESP_CONSOLE_UART_NUM=0
+
+# --- flash / partitions ------------------------------------------------------
+CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
+CONFIG_PARTITION_TABLE_SINGLE_APP_LARGE=y
+
+# --- CPU ---------------------------------------------------------------------
+CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ_160=y
+
+# --- FreeRTOS ----------------------------------------------------------------
+CONFIG_FREERTOS_HZ=1000
+
+# --- WiFi (station + softAP fallback) ----------------------------------------
+CONFIG_ESP_WIFI_SOFTAP_SUPPORT=y
+CONFIG_ESP_WIFI_STATIC_RX_BUFFER_NUM=8
+CONFIG_ESP_WIFI_DYNAMIC_RX_BUFFER_NUM=16
+CONFIG_ESP_WIFI_DYNAMIC_TX_BUFFER_NUM=16
+
+# --- lwIP ---------------------------------------------------------------------
+CONFIG_LWIP_MAX_SOCKETS=8
+CONFIG_LWIP_TCP_SND_BUF_DEFAULT=5744
+CONFIG_LWIP_TCP_WND_DEFAULT=5744
+
+# --- HTTP server -------------------------------------------------------------
+CONFIG_HTTPD_MAX_REQ_HDR_LEN=1024
+CONFIG_HTTPD_MAX_URI_LEN=512
+
+# --- logging -----------------------------------------------------------------
+CONFIG_LOG_DEFAULT_LEVEL_INFO=y
+CONFIG_LOG_MAXIMUM_LEVEL_DEBUG=y
+
+# --- mDNS is unnecessary on the bench; keep the image small -------------------
+CONFIG_MDNS_ENABLED=n

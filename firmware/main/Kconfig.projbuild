@@ -1,0 +1,68 @@
+menu "USV GPS simulator"
+
+    config USV_GPS_WIFI_SSID
+        string "Wi-Fi SSID to join"
+        default "usv-bench"
+        help
+            Station SSID.  The simulator joins this network when it is in range
+            and prints its IP on the USB console; the softAP stays available as
+            a fallback either way.
+
+    config USV_GPS_WIFI_PASSWORD
+        string "Wi-Fi password"
+        default "usv12345"
+        help
+            Station password.  Must be at least 8 characters for WPA2.
+
+    config USV_GPS_AP_SSID
+        string "Fallback softAP SSID"
+        default "USV-GPS-SIM"
+        help
+            SSID of the access point the simulator always raises.  Connect to it
+            and browse http://192.168.4.1 when the bench network is unavailable.
+
+    config USV_GPS_AP_PASSWORD
+        string "Fallback softAP password"
+        default "usvgps123"
+        help
+            Access point password, minimum 8 characters.
+
+    config USV_GPS_MON_TX_GPIO
+        int "Monitor UART TX GPIO (-1 disables)"
+        range -1 21
+        default 7
+        help
+            Optional transmit-only mirror of the NMEA stream, so a USB-TTL probe
+            can watch the sentences the flight controller is receiving without
+            unplugging anything.  GPIO7 is free on ESP32-C3 modules.
+
+    config USV_GPS_LED_GPIO
+        int "Blue LED GPIO (-1 disables)"
+        range -1 21
+        default 8
+        help
+            GPIO of the on-board blue LED.  Most ESP32-C3 SuperMini boards wire
+            it to GPIO8 with the anode to 3V3 (active low); some devkits use a
+            different pin or the opposite polarity.  Set -1 to disable blinking
+            entirely, or change the polarity option below if the LED stays on
+            instead of blinking.
+
+    config USV_GPS_LED_ACTIVE_LOW
+        bool "LED is active low (lit when the pin is driven to 0)"
+        default y
+        help
+            Suits the common C3 SuperMini wiring where the LED anode goes to
+            3V3 and the cathode to the GPIO.  Turn this off for boards that
+            light the LED when the pin is high.
+
+    config USV_GPS_LED_PULSE_MS
+        int "LED pulse width in milliseconds"
+        range 2 500
+        default 20
+        help
+            How long the LED stays lit per NMEA burst.  Keep it well under the
+            output period or consecutive pulses will merge and the LED will look
+            solid.  At the default 5 Hz (200 ms) a 20 ms pulse gives a clearly
+            separate flash five times a second.
+
+endmenu
